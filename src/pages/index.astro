@@ -1,5 +1,11 @@
 ---
 import Main from "../components/Main";
+import Login from "../components/Login";
+import { getUser } from "@astro-auth/core";
+import { signOut } from "@astro-auth/client";
+
+const user = getUser({client: Astro})
+
 ---
 <html lang="en">
 	<head>
@@ -8,6 +14,11 @@ import Main from "../components/Main";
 		<title>Astro</title>
 	</head>
 	<body>
-		<Main client:load/>
+		{!user && <Login client:load />}
+		{user && <Main user={user} client:load />}
+		<span>
+			{user && user.username}
+		</span>
+		<!-- <Main user={user} client:load /> -->
 	</body>
 </html>

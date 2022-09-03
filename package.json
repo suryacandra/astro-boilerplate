@@ -18,6 +18,7 @@
     "@astro-auth/client": "^1.0.2",
     "@astro-auth/core": "^1.0.10",
     "@astro-auth/providers": "^1.0.4",
+    "@astrojs/tailwind": "^1.0.0",
     "@astrojs/vercel": "^0.2.1"
   }
 }

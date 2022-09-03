@@ -1,12 +1,10 @@
-import { signIn } from "@astro-auth/client";
-import { ReactStateStore } from "@astro-auth/client";
+import { signIn, signOut } from "@astro-auth/client";
 
-const Main = () => {
-  const user = ReactStateStore.useUser({ update: true });
+const Main = ({user}) => {
 
   return (
     <div>
-      <button
+     {/* {!user && <button
         onClick={() => {
           signIn({
             provider: "google",
@@ -14,7 +12,14 @@ const Main = () => {
         }}
       >
         Sign In
-      </button>
+      </button>} */}
+    {user && <button
+        onClick={() => {
+          signOut();
+        }}
+      >
+        Sign Out
+      </button>}
 
       <pre>{JSON.stringify(user)}</pre>
     </div>
