@@ -19,6 +19,8 @@
     "@astro-auth/core": "^1.0.10",
     "@astro-auth/providers": "^1.0.4",
     "@astrojs/tailwind": "^1.0.0",
-    "@astrojs/vercel": "^0.2.1"
+    "@astrojs/vercel": "^0.2.1",
+    "bcrypt": "^5.0.1",
+    "mongodb": "^4.9.1"
   }
 }

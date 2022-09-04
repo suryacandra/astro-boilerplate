@@ -2,8 +2,9 @@
 import Main from "../components/Main";
 import Login from "../components/Login";
 import { getUser } from "@astro-auth/core";
-import { signOut } from "@astro-auth/client";
+import { getError } from "@astro-auth/core";
 
+const error = getError(Astro);
 const user = getUser({client: Astro})
 
 ---
@@ -14,11 +15,16 @@ const user = getUser({client: Astro})
 		<title>Astro</title>
 	</head>
 	<body>
-		{!user && <Login client:load />}
-		{user && <Main user={user} client:load />}
-		<span>
-			{user && user.username}
-		</span>
-		<!-- <Main user={user} client:load /> -->
+		<div class="flex flex-col items-center gap-5 p-5 m-5 border-2 border-black">
+			{!user && <Login client:load />}
+			{user && <Main user={user} client:load />}
+			{!user && <button class="bg-green-300 px-5 p-2">
+				<a href="/register">Register</a>
+				</button>}
+			<span>
+				{user && user.username}
+				{error && error}
+			</span>
+		</div>
 	</body>
 </html>

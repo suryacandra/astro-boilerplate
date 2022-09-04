@@ -1,5 +1,7 @@
 import AstroAuth from "@astro-auth/core";
 import { GoogleProvider, CredentialProvider } from "@astro-auth/providers";
+import { connectDb } from "../../../../lib/connectDb";
+import bcrypt from "bcrypt";
 
 export const all = AstroAuth({
   authProviders: [
@@ -10,12 +12,39 @@ export const all = AstroAuth({
     CredentialProvider({
       // Here, we are simply checking if the email matches and allow the user to login
       authorize: async (properties) => {
-        if (properties.username === "asu" && properties.password === "asu") {
-          return properties;
-        }
-
-        return null;
+          const client = await connectDb();
+          const db = await client.db('astro');
+          const usersCollection = await db.collection("users");
+          const userExists = await usersCollection.findOne({ email: properties.email });
+          if(!userExists) {
+            return null
+          }
+          const passwordMatch = await bcrypt.compare(properties.password, userExists.password);
+          if(passwordMatch) {
+            return userExists;
+          } else {
+            return null;
+            
+          }
       },
     }),
   ],
+  hooks: {
+    signIn: async (user) => {
+      const client = await connectDb();
+      const db = await client.db('astro');
+      const usersCollection = await db.collection("users");
+      const userExists = await usersCollection.findOne({ email: user.email });
+      if (!client) {
+        return false
+      } else {
+        await usersCollection.insertOne(user);
+        return true
+      }
+    },
+    redirectError: async (error) => {
+      console.log(error);
+      return "/";
+    },
+  }
 });

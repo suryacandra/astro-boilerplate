@@ -1,33 +1,58 @@
-import { useRef } from 'react'
+import { useRef } from "react";
 import { signIn } from "@astro-auth/client";
 
-const  Login = () => {
-    const usernameRef = useRef()
-    const passwordRef = useRef()
+const Login = () => {
+  const emailRef = useRef();
+  const passwordRef = useRef();
 
-    const submitHandler = (e: any) => {
-        e.preventDefault()
-        const data = {
-            username: usernameRef.current.value,
-            password: passwordRef.current.value
-        }
-        signIn({
-            provider: "credential",
-            login: {
-                username: data.username,
-                password: data.password
-            }
-        })
-    }
-    return (
-        <form onSubmit={submitHandler} className='flex flex-col gap-2 items-center m-2 p-2 border-2 border-black'>
-            <label htmlFor='username'>Username</label>
-            <input ref={usernameRef} type='text' id='username' className='ring-2 ring-black p-2' placeholder='username...' />
-            <label htmlFor='password'>Password</label>
-            <input ref={passwordRef} type='password' id='password' className='ring-2 ring-black p-2' placeholder='password...' />
-            <button className='bg-black text-white p-2 bg-green-300 px-5'>Login</button>
-        </form>
-    )
-}
+  const submitHandler = (e: any) => {
+    e.preventDefault();
+    const data = {
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+    };
+    signIn({
+      provider: "credential",
+      login: data,
+    });
+  };
+  return (
+    <div className='flex flex-col items-center w-full'>
+      <form
+        onSubmit={submitHandler}
+        className="flex flex-col gap-2 items-center w-full m-2 p-2"
+      >
+        <label htmlFor="username">Username</label>
+        <input
+          ref={emailRef}
+          type="email"
+          id="email"
+          className="ring-2 ring-black p-2 w-1/2"
+          placeholder="email..."
+        />
+        <label htmlFor="password">Password</label>
+        <input
+          ref={passwordRef}
+          type="password"
+          id="password"
+          className="ring-2 ring-black p-2 w-1/2"
+          placeholder="password..."
+        />
+        <button className="bg-black w-1/2 p-2 bg-green-300 px-5">
+          Login
+        </button>
+      </form>
+      <button className='bg-red-300 p-2 px-5'
+        onClick={() => {
+          signIn({
+            provider: "google",
+          });
+        }}
+      >
+        Sign in with Google
+      </button>
+    </div>
+  );
+};
 
 export default Login;
